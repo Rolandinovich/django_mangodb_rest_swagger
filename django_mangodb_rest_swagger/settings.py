@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_swagger',
+    'api.authentication',
+    'api.core',
 ]
 
 MIDDLEWARE = [
@@ -74,13 +78,18 @@ WSGI_APPLICATION = 'django_mangodb_rest_swagger.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'djongo',
+        'NAME': 'mango_test',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -119,3 +128,45 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'api.core.handlers.core_exception_handler',
+    'NON_FIELD_ERRORS_KEY': 'error',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'api.authentication.backends.JWTAuthentication',
+    ),
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10,
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
+}
+
+AUTH_USER_MODEL = 'authentication.User'
+
+# Время жизни токена в днях
+EXP_TOKEN = 365
+
+SWAGGER_SETTINGS = {
+    'APIS_SORTER': 'alpha',
+    'api_version': '0.1',
+    'enabled_methods': [
+        'get',
+        'post',
+        'put',
+        'delete',
+    ],
+    'SECURITY_DEFINITIONS': {
+        "api_key": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT authorization"
+        },
+    },
+    'USE_SESSION_AUTH': False,
+    'SHOW_REQUEST_HEADERS': True,
+    'JSON_EDITOR': True
+}
