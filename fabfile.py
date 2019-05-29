@@ -17,30 +17,30 @@ def filter_function(tarinfo):
     return tarinfo
 
 
-@task(hosts=['srv145228.hostiman.com'])
+@task(hosts=['151.248.125.29'])
 def deploy(c):
     password = c.config['connect_kwargs']['password'] + '\n'
     sudopass = Responder(pattern=r'\[sudo\] password:', response=password, )
-    c.sudo('supervisorctl stop djremo', pty=True, watchers=[sudopass])
+    c.sudo('systemctl stop gunicorn_djremo ', pty=True, watchers=[sudopass])
     with tarfile.open('djremo.tar.gz', 'w:gz') as tar:
         for root, dirs, files in os.walk('.'):
             for file in files:
                 tar.add(os.path.join(root, file), filter=filter_function)
 
     c.run('mkdir -p temp_djremo')
-    c.put('fitsup.tar.gz', 'temp_djremo')
+    c.put('djremo.tar.gz', 'temp_djremo')
     c.local('del djremo.tar.gz')
     c.run('mkdir -p djremo')
 
     c.run('tar -xzvf temp_djremo/djremo.tar.gz -C djremo')
     c.run('rm -rf temp_djremo')
 
-    c.run('''. ./venv/djremo/bin/activate
+    c.run('''. ./env/bin/activate
 cd djremo
 pip install -r requirements.txt
-python3 manage.py migrate 
+python manage.py migrate
 
-''', pty=True)
+    ''', pty=True)
 
-    c.sudo('supervisorctl start fitsup', pty=True, watchers=[sudopass])
+    c.sudo('systemctl start gunicorn_djremo ', pty=True, watchers=[sudopass])
 

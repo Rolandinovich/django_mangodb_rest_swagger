@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '6poufreu2rdyr&w^dv$92y5st7)wfl6cnb$xd-5*s&ry2+%iw9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -171,3 +171,6 @@ SWAGGER_SETTINGS = {
     'SHOW_REQUEST_HEADERS': True,
     'JSON_EDITOR': True
 }
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
