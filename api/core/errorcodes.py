@@ -54,3 +54,9 @@ ERR_TOKEN_USER_NOT_ACTIVE = {
     'detail': _('This user has been deactivated.'),
     'status': status.HTTP_403_FORBIDDEN
 }
+
+ERR_HAVENT_RIGHT = {
+    'code': 100012,
+    'detail': _('You not have right for action'),
+    'status': status.HTTP_403_FORBIDDEN
+}
