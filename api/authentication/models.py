@@ -38,6 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     username = models.CharField(db_index=True, max_length=19, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_manager = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []

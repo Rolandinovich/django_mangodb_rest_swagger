@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'api.authentication',
     'api.core',
+    'api.login_request'
 ]
 
 MIDDLEWARE = [
@@ -87,7 +88,7 @@ WSGI_APPLICATION = 'django_mangodb_rest_swagger.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'mango_test',
+        'NAME': 'mango_test2',
     }
 }
 
